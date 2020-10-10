@@ -126,57 +126,7 @@ def DenseNet(
     pooling=None,
     classes=1000,
     classifier_activation='softmax'):
-  """Instantiates the DenseNet architecture.
-  Reference:
-  - [Densely Connected Convolutional Networks](
-      https://arxiv.org/abs/1608.06993) (CVPR 2017)
-  Optionally loads weights pre-trained on ImageNet.
-  Note that the data format convention used by the model is
-  the one specified in your Keras config at `~/.keras/keras.json`.
-  Caution: Be sure to properly pre-process your inputs to the application.
-  Please see `applications.densenet.preprocess_input` for an example.
-  Arguments:
-    blocks: numbers of building blocks for the four dense layers.
-    include_top: whether to include the fully-connected
-      layer at the top of the network.
-    weights: one of `None` (random initialization),
-      'imagenet' (pre-training on ImageNet),
-      or the path to the weights file to be loaded.
-    input_tensor: optional Keras tensor
-      (i.e. output of `layers.Input()`)
-      to use as image input for the model.
-    input_shape: optional shape tuple, only to be specified
-      if `include_top` is False (otherwise the input shape
-      has to be `(224, 224, 3)` (with `'channels_last'` data format)
-      or `(3, 224, 224)` (with `'channels_first'` data format).
-      It should have exactly 3 inputs channels,
-      and width and height should be no smaller than 32.
-      E.g. `(200, 200, 3)` would be one valid value.
-    pooling: optional pooling mode for feature extraction
-      when `include_top` is `False`.
-      - `None` means that the output of the model will be
-          the 4D tensor output of the
-          last convolutional block.
-      - `avg` means that global average pooling
-          will be applied to the output of the
-          last convolutional block, and thus
-          the output of the model will be a 2D tensor.
-      - `max` means that global max pooling will
-          be applied.
-    classes: optional number of classes to classify images
-      into, only to be specified if `include_top` is True, and
-      if no `weights` argument is specified.
-    classifier_activation: A `str` or callable. The activation function to use
-      on the "top" layer. Ignored unless `include_top=True`. Set
-      `classifier_activation=None` to return the logits of the "top" layer.
-  Returns:
-    A `keras.Model` instance.
-  Raises:
-    ValueError: in case of invalid argument for `weights`,
-      or invalid input shape.
-    ValueError: if `classifier_activation` is not `softmax` or `None` when
-      using a pretrained top layer.
-  """
+
   if not (weights in {'imagenet', None} or file_io.file_exists(weights)):
     raise ValueError('The `weights` argument should be either '
                      '`None` (random initialization), `imagenet` '
@@ -207,14 +157,14 @@ def DenseNet(
   bn_axis = 3 if backend.image_data_format() == 'channels_last' else 1
 
   x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)))(img_input)
-  x = layers.Conv2D(32, 3, strides=1, use_bias=False, name='conv1/conv',
+  x = layers.Conv2D(64, 3, strides=1, use_bias=False, name='conv1/conv',
       kernel_initializer='he_normal')(x)
   x = layers.BatchNormalization(
       axis=bn_axis, epsilon=1.001e-5, name='conv1/bn')(
           x)
   x = layers.Activation('relu', name='conv1/relu')(x)
- # x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)))(x)
- # x = layers.MaxPooling2D(3, strides=2, name='pool1')(x)
+  x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)))(x)
+  x = layers.MaxPooling2D(3, strides=2, name='pool1')(x)
 
   x = dense_block(x, blocks[0], name='conv2')
   x = transition_block(x, 1, name='pool2')
