@@ -54,9 +54,9 @@ class LogPolar(Layer):
         rnd_name = 'PyFuncGrad' + str(np.random.randint(0, 1E+8))
 
         tf.RegisterGradient(rnd_name)(_logpolarGrad)  # see _MySquareGrad for grad example
-        g = tf.get_default_graph()
+        g = tf.compat.v1.get_default_graph()
         with g.gradient_override_map({"PyFunc": rnd_name}):
-            outputs = tf.reshape(tf.py_func(process_samples, [x], tf.float32, stateful=stateful, name=name),
+            outputs = tf.reshape(tf.compat.v1.py_func(process_samples, [x], tf.float32, stateful=stateful, name=name),
                                  (-1, n, m, d))
 
         #outputs.set_shape(inputs.get_shape())
