@@ -1,5 +1,4 @@
-from tensorflow.keras.engine.topology import Layer
-from tensorflow.keras.layers import InputSpec
+from tensorflow.keras.layers import Layer, InputSpec
 from tensorflow.keras import activations
 import utilmyproj as util
 import numpy as np
