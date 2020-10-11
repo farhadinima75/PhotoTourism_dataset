@@ -1,23 +1,3 @@
-# Copyright 2018 The TensorFlow Authors. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-# ==============================================================================
-# pylint: disable=invalid-name
-"""DenseNet models for Keras.
-Reference paper:
-  - [Densely Connected Convolutional Networks]
-    (https://arxiv.org/abs/1608.06993) (CVPR 2017 Best Paper Award)
-"""
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -31,24 +11,6 @@ from tensorflow.python.keras.utils import layer_utils
 from tensorflow.python.lib.io import file_io
 from tensorflow.python.util.tf_export import keras_export
 import tensorflow
-
-BASE_WEIGTHS_PATH = ('https://storage.googleapis.com/tensorflow/'
-                     'keras-applications/densenet/')
-DENSENET121_WEIGHT_PATH = (
-    BASE_WEIGTHS_PATH + 'densenet121_weights_tf_dim_ordering_tf_kernels.h5')
-DENSENET121_WEIGHT_PATH_NO_TOP = (
-    BASE_WEIGTHS_PATH +
-    'densenet121_weights_tf_dim_ordering_tf_kernels_notop.h5')
-DENSENET169_WEIGHT_PATH = (
-    BASE_WEIGTHS_PATH + 'densenet169_weights_tf_dim_ordering_tf_kernels.h5')
-DENSENET169_WEIGHT_PATH_NO_TOP = (
-    BASE_WEIGTHS_PATH +
-    'densenet169_weights_tf_dim_ordering_tf_kernels_notop.h5')
-DENSENET201_WEIGHT_PATH = (
-    BASE_WEIGTHS_PATH + 'densenet201_weights_tf_dim_ordering_tf_kernels.h5')
-DENSENET201_WEIGHT_PATH_NO_TOP = (
-    BASE_WEIGTHS_PATH +
-    'densenet201_weights_tf_dim_ordering_tf_kernels_notop.h5')
 
 layers = VersionAwareLayers()
 
