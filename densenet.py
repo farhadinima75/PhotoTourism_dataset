@@ -63,7 +63,7 @@ def dense_block(x, blocks, name):
     Output tensor for the block.
   """
   for i in range(blocks):
-    x = conv_block(x, 4, name=name + '_block' + str(i + 1))
+    x = conv_block(x, 12, name=name + '_block' + str(i + 1))
   return x
 
 
@@ -88,7 +88,7 @@ def transition_block(x, reduction, name):
       name=name + '_conv',
       kernel_initializer='he_normal')(
           x)
-  #x = tensorflow.keras.layers.SpatialDropout2D(0.25)(x)
+  x = tensorflow.keras.layers.SpatialDropout2D(0.15)(x)
   x = layers.AveragePooling2D(2, strides=2, name=name + '_pool')(x)
   return x
 
@@ -112,7 +112,7 @@ def conv_block(x, growth_rate, name):
       growth_rate, 3, padding='same', use_bias=False, name=name + '_2_conv',
       kernel_initializer='he_normal')(
           x1)
-  #x1 = tensorflow.keras.layers.SpatialDropout2D(0.25)(x1)
+  x1 = tensorflow.keras.layers.SpatialDropout2D(0.15)(x1)
   x = layers.Concatenate(axis=bn_axis, name=name + '_concat')([x, x1])
   return x
 
