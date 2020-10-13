@@ -50,7 +50,7 @@ def transition_block(x, reduction, name):
       name=name + '_conv',
       kernel_initializer='he_normal')(
           x)
-  x = tensorflow.keras.layers.SpatialDropout2D(0.5)(x)
+  x = tensorflow.keras.layers.SpatialDropout2D(0.1)(x)
   x = layers.AveragePooling2D(2, strides=2, name=name + '_pool')(x)
   return x
 
@@ -74,7 +74,7 @@ def conv_block(x, growth_rate, name):
       growth_rate, 3, padding='same', use_bias=False, name=name + '_2_conv',
       kernel_initializer='he_normal')(
           x1)
-  x1 = tensorflow.keras.layers.SpatialDropout2D(0.5)(x1)
+  x1 = tensorflow.keras.layers.SpatialDropout2D(0.1)(x1)
   x = layers.Concatenate(axis=bn_axis, name=name + '_concat')([x, x1])
   return x
 
