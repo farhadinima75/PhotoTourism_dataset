@@ -10,7 +10,7 @@ from tensorflow.python.keras.utils import data_utils
 from tensorflow.python.keras.utils import layer_utils
 from tensorflow.python.lib.io import file_io
 from tensorflow.python.util.tf_export import keras_export
-import tensorflow
+import tensorflow 
 
 layers = VersionAwareLayers()
 
@@ -25,7 +25,7 @@ def dense_block(x, blocks, name):
     Output tensor for the block.
   """
   for i in range(blocks):
-    x = conv_block(x, 12, name=name + '_block' + str(i + 1))
+    x = conv_block(x, 10, name=name + '_block' + str(i + 1))
   return x
 
 
@@ -48,8 +48,8 @@ def transition_block(x, reduction, name):
       1,
       use_bias=False,
       name=name + '_conv',
-      kernel_initializer='he_normal')(
-          x)
+      kernel_initializer='he_normal',
+      kernel_regularizer = tensorflow.keras.regularizers.l2(1e-4))(x)
   #x = tensorflow.keras.layers.SpatialDropout2D(0.1)(x)
   x = layers.AveragePooling2D(2, strides=2, name=name + '_pool')(x)
   return x
@@ -72,8 +72,8 @@ def conv_block(x, growth_rate, name):
   x1 = layers.Activation('relu', name=name + '_1_relu')(x1)
   x1 = layers.Conv2D(
       growth_rate, 3, padding='same', use_bias=False, name=name + '_2_conv',
-      kernel_initializer='he_normal')(
-          x1)
+      kernel_initializer='he_normal',
+      kernel_regularizer = tensorflow.keras.regularizers.l2(1e-4))(x1)
   #x1 = tensorflow.keras.layers.SpatialDropout2D(0.1)(x1)
   x = layers.Concatenate(axis=bn_axis, name=name + '_concat')([x, x1])
   return x
@@ -102,8 +102,9 @@ def DenseNet(blocks, include_top=True, weights='imagenet', input_tensor=None, in
   bn_axis = 3 if backend.image_data_format() == 'channels_last' else 1
 
   x = layers.ZeroPadding2D(padding=((1, 1), (1, 1)))(img_input)
-  x = layers.Conv2D(32, 3, strides=1, use_bias=False, name='conv1/conv',
-      kernel_initializer='he_normal')(x)
+  x = layers.Conv2D(50, 3, strides=1, use_bias=False, name='conv1/conv',
+      kernel_initializer='he_normal',
+      kernel_regularizer = tensorflow.keras.regularizers.l2(1e-4))(x)
   x = layers.BatchNormalization(
       axis=bn_axis, epsilon=1.001e-5, name='conv1/bn')(
           x)
